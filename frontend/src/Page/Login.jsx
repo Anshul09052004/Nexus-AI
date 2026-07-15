@@ -3,8 +3,11 @@ import { signInWithPopup } from "firebase/auth";
 import api from "../Utiles/axios";
 import icon from "../assets/NexusLogo.jpg";
 import { FcGoogle } from "react-icons/fc";
+import { useDispatch } from "react-redux";
+import { setUserData } from "../Redux/userSlice";
 
 function Login() {
+    const dispatch = useDispatch();
     const googleLogin = async () => {
         try {
             const result = await signInWithPopup(auth, googleProvider);
@@ -13,8 +16,10 @@ function Login() {
             const { data } = await api.post("/auth/login", { token });
 
             console.log(data);
+            dispatch(setUserData(data));
         } catch (error) {
             console.log(error.message);
+            dispatch(setUserData(null));
         }
     };
 
