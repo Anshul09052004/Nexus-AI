@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import proxy from 'express-http-proxy';
 import cors from 'cors';
+import { proxyWithHeader } from './Utiles/ProxyWithHeader.js';
 dotenv.config();
 
 const port = process.env.PORT || 8000;
@@ -13,6 +14,7 @@ app.use(cors(
     }
 ));
 app.use("/auth", proxy(process.env.AUTH_SERVICE_URL));
+app.use("/chat", proxyWithHeader(process.env.CHAT_SERVICE_URL))
 
 
 app.get('/', (req, res) => {
